@@ -18,7 +18,6 @@ module.exports = [
     files: ['app.js'],
     languageOptions: {
       ecmaVersion: 2018,
-      sourceType: 'commonjs',
       globals: {
         ...globals.node
       }

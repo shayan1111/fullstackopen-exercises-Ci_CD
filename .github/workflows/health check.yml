@@ -1,0 +1,15 @@
+name: Health Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  health_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ping the server
+        uses: jtalk/url-health-check-action@v5
+        with:
+          url: https://fs-pokedex-plucky-night-289.fly.dev/health

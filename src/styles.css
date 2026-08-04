@@ -25,7 +25,7 @@ footer {
 .loading-spinner {
   animation: rotation 2s infinite linear;
   margin: 120px;
-  width: 80px;
+  width: 60px;
 }
 @keyframes rotation {
   from {
