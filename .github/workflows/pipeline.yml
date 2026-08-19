@@ -4,24 +4,35 @@ on:
   push:
     branches:
       - main
-  
+
   workflow_dispatch:
 
 jobs:
-  simple_deployment_pipeline:    
+  simple_deployment_pipeline:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6    
-        with:          
-          node-version: '24'
-      - name: Install dependencies        
-        run: npm install
-      - name: Check style        
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright
+        run: npm install --no-save --package-lock=false @playwright/test
+
+      - name: Check style
         run: npm run eslint
-      - name: Run npm start
-        run: npm run test
-      
-      - name: Run npm build
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Build application
         run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        run: npm run test:e2e

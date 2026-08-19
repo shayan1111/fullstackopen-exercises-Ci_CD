@@ -5,8 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "start": "webpack-dev-server --open --mode development --port 8080",
+    "start:test": "webpack-dev-server --mode development --port 8080",
     "start-prod": "node app.js",
     "test": "jest",
+    "test:e2e": "playwright test",
     "eslint": "eslint './**/*.{js,jsx}'",
     "build": "webpack --mode production"
   },
@@ -32,7 +34,8 @@
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "setupFiles": ["<rootDir>/jest.setup.js"]
+    "setupFiles": ["<rootDir>/jest.setup.js"],
+    "testPathIgnorePatterns": ["<rootDir>/e2e/"]
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
