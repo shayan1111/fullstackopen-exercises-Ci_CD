@@ -4,11 +4,12 @@ const app = express()
 // get the port from env variable
 const PORT = process.env.PORT || 5001
 
+app.get('/health', (req, res) => {
+  res.status(200).send('Ok')
+})
+
 app.use(express.static('dist'))
 
-app.get('/health', (req, res) => {
-  res.send('Not ok')
-})
 
 const start = async () => {
   await app.listen(PORT)
