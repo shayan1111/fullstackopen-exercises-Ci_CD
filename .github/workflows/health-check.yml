@@ -11,4 +11,4 @@ jobs:
 
     steps:
       - name: Check application health
-        run: curl --fail https://fullstackopen-exercises-ci-cd.onrenderf.com/
+        run: curl --fail https://fullstackopen-exercises-ci-cd.onrender.com/
