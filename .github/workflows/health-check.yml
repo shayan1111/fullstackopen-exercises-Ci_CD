@@ -1,0 +1,14 @@
+name: Periodic Health Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+jobs:
+  health_check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check application health
+        run: curl --fail https://fullstackopen-exercises-ci-cd.onrender.com/
