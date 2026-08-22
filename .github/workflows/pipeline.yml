@@ -12,9 +12,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  simple_deployment_pipeline:
+  build_and_test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -42,21 +41,33 @@ jobs:
       - name: Run Playwright tests
         run: npm run test:e2e
 
-      - name: Trigger deployment
+  deploy:
+    needs: [build_and_test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Deployment
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
-
+  
+  notify_success:
+    needs: [deploy]
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Discord Success Notification
-        if: ${{ success() }}
         uses: sarisia/actions-status-discord@v1.16.0
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: Success
           title: "Deployment succeeded"
           description: "New version deployed successfully"
-
+  
+  notify_failure:
+    needs: [build_and_test]
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Discord Failure Notification
-        if: ${{ failure() }}
         uses: sarisia/actions-status-discord@v1.16.0
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
@@ -69,7 +80,7 @@ jobs:
             Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: [deploy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
