@@ -13,3 +13,4 @@ Start by running `npm install` inside the project folder
 `npm run start-prod` to run your production build
 
 Link to my deployed app: https://fullstackopen-exercises-ci-cd.onrender.com/
+Link to my other repository: https://github.com/shayan1111/phonebook-cicd
